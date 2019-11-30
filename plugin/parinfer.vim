@@ -29,7 +29,7 @@ let delims = {
   let full_form_delimiters = delims['parens']
 
   "search backward for a ( on first col. Do not move the cursor
-  let topline = search('^(', 'bn') 
+  let topline = search('^(', 'bn')
 
   if topline == 0
     let topline = search('^{', 'bn')
@@ -55,16 +55,12 @@ let delims = {
     let full_form_delimiters = delims['brackets']
   endif
 
-  if topline == 0
-    throw 'No top-level form found!'
-  endif
-
   " temp, set cursor to form start
   call setpos('.', [0, topline, 1, 0])
 
-  " next paren match 
+  " next paren match
   " only usable when parens are balanced
-  let matchline = searchpair(full_form_delimiters['left'],'',full_form_delimiters['right'], 'nW') 
+  let matchline = searchpair(full_form_delimiters['left'],'',full_form_delimiters['right'], 'nW')
 
   let bottomline = search('^' . full_form_delimiters['left'], 'nW') - 1
 
@@ -77,12 +73,12 @@ let delims = {
   let lines = getline(topline, bottomline)
   let section = join(lines, "\n")
   return [topline, bottomline, section]
-  
+
 endfunction
 
 function! parinfer#draw(res, top, bottom)
   let lines = split(a:res, "\n")
-  let counter = a:top 
+  let counter = a:top
   for line in lines
     call setline(counter, line)
     let counter += 1
@@ -145,7 +141,7 @@ function! parinfer#del_char()
 
   if mark <= 0
     let newline = line[1:len(line) - 1]
-  elseif 
+  elseif
     let start = line[0:mark]
     let end = line[row:len(line)]
     let newline = start . end
@@ -156,7 +152,7 @@ function! parinfer#del_char()
 endfunction
 
 " TODO toggle modes
-com! -bar ToggleParinferMode cal parinfer#ToggleParinferMode() 
+com! -bar ToggleParinferMode cal parinfer#ToggleParinferMode()
 
 augroup parinfer
   autocmd!
